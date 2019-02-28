@@ -1,0 +1,5 @@
+__pycache__/*
+dist/*
+build/*
+.DS_Store
+lib/__pycache__/*
