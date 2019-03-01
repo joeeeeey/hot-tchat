@@ -10,7 +10,7 @@ clients = {}
 addresses = {}
 HOST = ''
 PORT = 33335
-BUFSIZ = 1024*40  # TODO https://stackoverflow.com/questions/17667903/python-socket-receive-large-amount-of-data
+BUFSIZ = 1024*60  # TODO https://stackoverflow.com/questions/17667903/python-socket-receive-large-amount-of-data
 ADDR = (HOST, PORT)
 SERVER = socket(AF_INET, SOCK_STREAM)
 SERVER.bind(ADDR)
@@ -21,7 +21,7 @@ def accept_incoming_connections():
     while True:
         client, client_address = SERVER.accept()
         print("%s:%s has connected." % client_address)
-        client.send(bytes(text2art('TERMINAL HOT CHAT\n\n\n') +
+        client.send(bytes(text2art('STUDENT HOT CHAT\n\n\n') +
                           "Now type your name and press enter!", "utf8"))
         addresses[client] = client_address
         Thread(target=handle_client, args=(client,)).start()
@@ -47,7 +47,6 @@ def handle_client(client):  # Takes client socket as argument.
             if msg != bytes("{quit}", "utf8"):
                 print('Begin sending msg is: ', msg)
                 handle_msg(msg, name, client)
-                
             else:
                 client.send(bytes("{quit}", "utf8"))
                 client.close()

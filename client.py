@@ -43,7 +43,7 @@ def on_closing(event=None):
 # else:
 #     PORT = int(PORT)
 
-BUFSIZ = 1024*40 # TODO https://stackoverflow.com/questions/17667903/python-socket-receive-large-amount-of-data
+BUFSIZ = 1024*60 # TODO https://stackoverflow.com/questions/17667903/python-socket-receive-large-amount-of-data
 # ADDR = (HOST, PORT)
 ADDR = ('10.20.0.100', 33335)
 
