@@ -30,10 +30,11 @@ def accept_incoming_connections():
 def handle_client(client):  # Takes client socket as argument.
     """Handles a single client connection."""
     name = client.recv(BUFSIZ).decode("utf8")
-    # welcome = 'Welcome %s! If you ever want to quit, type {quit} to exit.' % name
+    # welcome = 'Welcome %s! If you ever want to quit, type \quit to exit.' % name
     welcome = '\n Hello, ' + \
         colored(name, "yellow") + \
-        '~ If you ever want to quit, type {quit} to exit.'
+        '~ If you ever want to quit, type \quit to exit.' + \
+        'And you type \help to see help doc'
     # asciify
 
     client.send(bytes(welcome, "utf8"))
@@ -44,11 +45,11 @@ def handle_client(client):  # Takes client socket as argument.
     while True:
         try:
             msg = client.recv(BUFSIZ)
-            if msg != bytes("{quit}", "utf8"):
+            if msg != bytes("\\quit", "utf8"):
                 print('Begin sending msg is: ', msg)
                 handle_msg(msg, name, client)
             else:
-                client.send(bytes("{quit}", "utf8"))
+                client.send(bytes("\\quit", "utf8"))
                 client.close()
                 del clients[client]
                 broadcast(bytes("%s has left the chat." % name, "utf8"))
@@ -62,7 +63,7 @@ def handle_client(client):  # Takes client socket as argument.
 def handle_msg(msg, name, client):
     response_msg = None
     broadcast(msg, colored(name, "yellow")+": ", client)
-    if (msg == b'/ping'):
+    if (msg == b'\ping'):
         response_msg = b'Pong!'
     if (response_msg):
         broadcast(response_msg, colored('SYSTEM', "blue")+": ")

@@ -23,17 +23,16 @@ def receive():
         except OSError:  # Possibly client has left the chat.
             break
 
+def handle_help():
+    return """
+Usage: \<command> [<args>]
 
-def send(event=None):  # event is passed by binders.
-    """Handles sending of messages."""
-    client_socket.send(bytes(msg, "utf8"))
-    if msg == "{quit}":
-        client_socket.close()
-
-
-def on_closing(event=None):
-    """This function is to be called when the window is closed."""
-    send()
+Some useful pyenv commands are:
+    commands    List all available pyenv commands
+    help        show help information
+    ping        Pong!
+    quit        leave chat room
+    """
 
 # ----Now comes the sockets part----
 # HOST = input('Enter host: ')
@@ -45,7 +44,8 @@ def on_closing(event=None):
 
 BUFSIZ = 1024*60 # TODO https://stackoverflow.com/questions/17667903/python-socket-receive-large-amount-of-data
 # ADDR = (HOST, PORT)
-ADDR = ('10.20.0.100', 33335)
+ADDR = ('127.0.0.1', 33335)
+# ADDR = ('10.20.0.100', 33335)
 
 client_socket = socket(AF_INET, SOCK_STREAM)
 client_socket.connect(ADDR)
@@ -57,7 +57,9 @@ while True:
     if msg.endswith('.png') or msg.endswith('.jpg') or msg.endswith('.jpeg') or msg.endswith('.gif'):
         if os.path.isfile(msg):
           msg = asciify.runner(msg)
-
+    if msg == '\help':
+        print(handle_help())
+        continue
     client_socket.send(bytes(msg, "utf-8"))
-    if msg == "{quit}":
+    if msg == "\quit":
         client_socket.close()
