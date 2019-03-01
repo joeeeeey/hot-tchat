@@ -45,7 +45,8 @@ def handle_client(client):  # Takes client socket as argument.
         try:
             msg = client.recv(BUFSIZ)
             if msg != bytes("{quit}", "utf8"):
-                broadcast(msg, colored(name, "yellow")+": ", client)
+                print('Begin sending msg is: ', msg)
+                handle_msg(msg, name, client)
             else:
                 client.send(bytes("{quit}", "utf8"))
                 client.close()
@@ -58,6 +59,13 @@ def handle_client(client):  # Takes client socket as argument.
             broadcast(bytes("%s has left the chat." % name, "utf8"))
             break
 
+def handle_msg(msg, name, client):
+    response_msg = None
+    broadcast(msg, colored(name, "yellow")+": ", client)
+    if (msg == b'/ping'):
+        response_msg = b'Pong!'
+    if (response_msg):
+        broadcast(response_msg, colored('SYSTEM', "blue")+": ")
 
 # prefix is for name identification.
 def broadcast(msg, prefix="", currentClient=None):
@@ -68,7 +76,6 @@ def broadcast(msg, prefix="", currentClient=None):
         #     pass
         # else:
         #     sock.send(bytes(prefix, "utf8")+msg)
-
 
 if __name__ == "__main__":
     SERVER.listen(15)  # Listens for 5 connections at max.
