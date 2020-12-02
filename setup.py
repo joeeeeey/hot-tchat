@@ -9,7 +9,7 @@ from setuptools import setup
 
 APP = ['client.py']
 DATA_FILES = ['--iconfile']
-OPTIONS = {'iconfile': '/Users/joeeey/learn-py/chat-room/icon.icns'}
+OPTIONS = {'iconfile': '/Users/joeeey/my-projects/hot-tchat/icon.icns'}
 
 setup(
     app=APP,
